@@ -1,3 +1,4 @@
+const maxIterations = 8;
 let length = 0;
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -6,32 +7,60 @@ function setup() {
   } else {
     length = window.innerWidth * 0.8;
   }
-}
-
-function SierpinskiCarpet(len, coordinates, iterations) {
-  fill(0);
-  stroke(255);
-  rect(coordinates.x, coordinates.y, len, len);
-  for (let x = 0; x <= 2; x++) {
-    for (let y = 0; y <= 2; y++) {
-      if ((x === 1 && y === 1) || iterations === 6) {
-      } else {
-        const newCoordinates = {
-          x: coordinates.x + x * (len / 3),
-          y: coordinates.y + y * (len / 3),
-        };
-        SierpinskiCarpet(len / 3, newCoordinates, iterations + 1);
-      }
-    }
-  }
-}
-
-function draw() {
   background(51);
-  translate(
-    (window.innerWidth - length) / 2,
-    (window.innerHeight - length) / 2
-  );
-  SierpinskiCarpet(length, { x: 0, y: 0 }, 0);
-  noLoop();
+  translate(width / 2, (height - (length * sqrt(3)) / 2) / 2);
+  stroke(255);
+  SierpinskiGasket(length, 0);
 }
+
+function SierpinskiGasket(len, iterations = maxIterations) {
+  if (iterations >= maxIterations) {
+    return;
+  }
+  fill(0);
+  angleMode(DEGREES);
+  const h = (len * sqrt(3)) / 2;
+  rotate(30);
+  triangle(0, 0, 0, len, h, len / 2);
+
+  push();
+  rotate(30);
+  triangle(len / 2, 0, (len * 3) / 4, h / 2, (len * 1) / 4, h / 2);
+  pop();
+
+  stroke(255, 255, 0);
+  push();
+  rotate(-30);
+  SierpinskiGasket(len / 2, iterations + 1);
+  pop();
+
+  push();
+
+  stroke(0, 255, 255);
+  rotate(-30);
+  translate(len / 4, h / 2);
+  SierpinskiGasket(len / 2, iterations + 1);
+  pop();
+
+  stroke(0, 255, 0);
+  push();
+  rotate(-30);
+  translate(-len / 4, h / 2);
+  SierpinskiGasket(len / 2, iterations + 1);
+  pop();
+
+  // for (let x = 0; x <= 2; x++) {
+  //   for (let y = 0; y <= 2; y++) {
+  //     if ((x === 1 && y === 1) || iterations === 6) {
+  //     } else {
+  //       const newCoordinates = {
+  //         x: coordinates.x + x * (len / 3),
+  //         y: coordinates.y + y * (len / 3),
+  //       };
+  //       SierpinskiGasket(len / 3, newCoordinates, iterations + 1);
+  //     }
+  //   }
+  // }
+}
+
+function draw() {}
