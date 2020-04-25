@@ -1,5 +1,6 @@
 const maxIterations = 8;
 let length = 0;
+
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   if (window.innerWidth > window.innerHeight) {
@@ -48,19 +49,6 @@ function SierpinskiGasket(len, iterations = maxIterations) {
   translate(-len / 4, h / 2);
   SierpinskiGasket(len / 2, iterations + 1);
   pop();
-
-  // for (let x = 0; x <= 2; x++) {
-  //   for (let y = 0; y <= 2; y++) {
-  //     if ((x === 1 && y === 1) || iterations === 6) {
-  //     } else {
-  //       const newCoordinates = {
-  //         x: coordinates.x + x * (len / 3),
-  //         y: coordinates.y + y * (len / 3),
-  //       };
-  //       SierpinskiGasket(len / 3, newCoordinates, iterations + 1);
-  //     }
-  //   }
-  // }
 }
 
 function draw() {}
