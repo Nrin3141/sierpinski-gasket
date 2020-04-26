@@ -1,9 +1,10 @@
 class Configuration {
   constructor() {
     this.maxIterations = 8;
-    this.r = 255;
-    this.g = 255;
-    this.b = 255;
+    this.firstColor = "#FF00FF";
+    this.secondColor = "#00FFFF";
+    this.thirdColor = "#FFFF00";
+    this.fillColor = "#FFFFFF";
   }
 }
 let config = new Configuration();
@@ -21,13 +22,16 @@ function setup() {
 
   const gui = new dat.GUI();
   const iterationController = gui.add(config, "maxIterations", 1, 10).step(1);
-  const rController = gui.add(config, "r", 0, 255).step(1);
-  const gController = gui.add(config, "g", 0, 255).step(1);
-  const bController = gui.add(config, "b", 0, 255).step(1);
+  const firstColorController = gui.addColor(config, "firstColor");
+  const secondColorController = gui.addColor(config, "secondColor");
+  const thirdColorController = gui.addColor(config, "thirdColor");
+  const fillColorController = gui.addColor(config, "fillColor");
+
   iterationController.onChange(drawSierpinskiGasket);
-  rController.onChange(drawSierpinskiGasket);
-  bController.onChange(drawSierpinskiGasket);
-  gController.onChange(drawSierpinskiGasket);
+  firstColorController.onChange(drawSierpinskiGasket);
+  secondColorController.onChange(drawSierpinskiGasket);
+  thirdColorController.onChange(drawSierpinskiGasket);
+  fillColorController.onChange(drawSierpinskiGasket);
 }
 
 function drawSierpinskiGasket() {
@@ -42,7 +46,7 @@ function SierpinskiGasket(len, iterations = maxIterations) {
   if (iterations >= config.maxIterations) {
     return;
   }
-  fill(0);
+  fill(config.fillColor);
   angleMode(DEGREES);
   const h = (len * sqrt(3)) / 2;
   rotate(30);
@@ -53,20 +57,20 @@ function SierpinskiGasket(len, iterations = maxIterations) {
   triangle(len / 2, 0, (len * 3) / 4, h / 2, (len * 1) / 4, h / 2);
   pop();
 
-  stroke(config.r, config.g, config.b);
+  stroke(config.firstColor);
   push();
   rotate(-30);
   SierpinskiGasket(len / 2, iterations + 1);
   pop();
 
   push();
-  stroke(config.r, config.g, config.b);
+  stroke(config.secondColor);
   rotate(-30);
   translate(len / 4, h / 2);
   SierpinskiGasket(len / 2, iterations + 1);
   pop();
 
-  stroke(config.r, config.g, config.b);
+  stroke(config.thirdColor);
   push();
   rotate(-30);
   translate(-len / 4, h / 2);
